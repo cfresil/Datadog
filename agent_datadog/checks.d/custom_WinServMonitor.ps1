@@ -1,5 +1,5 @@
 # Test-Automatic-Services.ps1 
-# 
+# 1.0
 # Written by Aaron Wurthmann (aaron (AT) wurthmann (DOT) com) 
 #        http://irl33t.com 
 # 
@@ -63,12 +63,18 @@ $ServerName = $env:COMPUTERNAME
 
 #set dedicated exclusion list for each server
 $IgnoreSpec = switch -exact ($ServerName) {
-    "ServernameXXX" {
-        ''       
+    "SSRS-FR-1-DEV" {
+        'SQL Server Launchpad (SSRS_DEV_2016)';       
+    }
+    "thinkf-app1-tst" {
+        'EVault Software BUAgent',' Agent EVault Software';       
     }
 }
 # List of Global Services to Ignore. 
 $IgnoreGlobal=@(
+	'Windows Modules Installer',
+	'Windows Azure Telemetry Service,'
+    'Microsoft Monitoring Agent',
     'Volume Shadow Copy',
     'Downloaded Maps Manager',
     'IaasVmProvider',
@@ -88,7 +94,7 @@ $filter="NOT DisplayName LIKE 'Sync Host%' AND NOT DisplayName LIKE 'CDPUserSvc%
 $pattern = "has not registered for any start or stop triggers"
 $flag = $false
 
-#concatanation
+#concatenation
 $ExcludeList = $IgnoreGlobal + $IgnoreSpec
 
 # Get list of services that are not running, not in the ignore list and set to automatic 
